@@ -19,9 +19,13 @@ app.post("/", function (request, response) {
   if (request.body.challenge) {
     response.json(request.body.challenge);
   } else {
+    if (request.body.token !== process.env.VERIFY_TOKEN) {
+      response.sendStatus(400); 
+    }
     if (request.body &&
         request.body.event &&
         request.body.event.links) {
+      console.log(request.body);
       var r = /([^/(Dd)]+$)/;
       var did = request.body.event.links[0].url.match(r)[0];
     }
